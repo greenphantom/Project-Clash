@@ -51,5 +51,14 @@ public class Mouse_Control : MonoBehaviour {
         rigidbody.velocity = movement;
  
     }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.name == "Water")
+        {
+            Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.velocity = Vector2.zero;
+        }
+    }
 }
  
