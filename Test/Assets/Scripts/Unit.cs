@@ -19,8 +19,8 @@ public class Unit : MonoBehaviour{
     public Unit(string Name = "Unit"){
         name = Name;
         StatFactory sf = new StatFactory();
-        Health = sf.GetStat(StatType.Health);
-        Stamina = sf.GetStat(StatType.Stamina);
+        Health = sf.GetStat(StatType.Health,0,99);
+        Stamina = sf.GetStat(StatType.Stamina,0,99);
         Strength = sf.GetStat(StatType.Strength);
         Skill = sf.GetStat(StatType.Skill);
         Endurance = sf.GetStat(StatType.Endurance);
