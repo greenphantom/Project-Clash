@@ -13,11 +13,15 @@ public class Unit : MonoBehaviour{
     public Stat Speed;
     public Stat Movement;
     public new string name;
+    public double growthRate;
+    public uint experience;
     // Class 
     // Subclass
 
-    public Unit(string Name = "Unit"){
+    public Unit(string Name = "Unit", double GrowthRate = .25){
         name = Name;
+        growthRate = GrowthRate;
+        experience = 0;
         StatFactory sf = new StatFactory();
         Health = sf.GetStat(StatType.Health,0,99);
         Stamina = sf.GetStat(StatType.Stamina,0,99);
@@ -32,12 +36,44 @@ public class Unit : MonoBehaviour{
         Movement = sf.GetStat(StatType.Movement,4,8);
     }
 
-    public void takeDamage(int amount){
+    // TODO: This is jank. Probably can be fixed with an interface?
+    public void takeDamage(uint amount){
         Health.decrease(amount);
     }
 
-    public void Heal(int amount){
+    // TODO: This is jank. Probably can be fixed with an interface?
+    public void Heal(uint amount){
         Health.increase(amount);
+    }
+
+    public uint gainExp(uint exp){
+        uint totalExp = experience + exp;
+        uint levels = 0;
+        double clas = .25; // Set this later when classes are implemented
+        while (totalExp > 100){
+            totalExp -= 100;
+            levels += rollStatLevels(clas);
+            if (levels == 0){ // If they get a blank levelUp, try again for mercy.
+                levels += rollStatLevels(clas);
+            }
+        }
+        experience = totalExp;
+        return levels;
+    }
+
+    private uint rollStatLevels(double clas){
+        uint amount = 0;
+        amount += Health.levelUp(growthRate,clas);
+        amount += Stamina.levelUp(growthRate,clas);
+        amount += Strength.levelUp(growthRate,clas);
+        amount += Skill.levelUp(growthRate,clas);
+        amount += Endurance.levelUp(growthRate,clas);
+        amount += Magic.levelUp(growthRate,clas);
+        amount += Defense.levelUp(growthRate,clas);
+        amount += Resistance.levelUp(growthRate,clas);
+        amount += Luck.levelUp(growthRate,clas);
+        amount += Speed.levelUp(growthRate,clas);
+        return amount;
     }
 
 
