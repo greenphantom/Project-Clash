@@ -1,5 +1,5 @@
 public class StatFactory {
-    public Stat GetStat(StatType type, int startValue=10, int min=1, int max=80){
+    public Stat GetStat(StatType type, uint startValue=10, uint min=1, uint max=80){
         switch (type) {
             case StatType.Health:
                 return new Stat("Health","The amount of hits you can take before your unit dies.",startValue,max,min);
