@@ -3,15 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
-public class MouseTileMov : MonoBehaviour
+public class KeyMovement2 : MonoBehaviour
 {
      void Update () {
-		 double range =  0.5;
+		float range =  5;
         GameObject player = GameObject.Find("Player");
         Rigidbody2D body = player.GetComponent<Rigidbody2D>(); 
-        if (Input.GetMouseButtonDown(0)& Math.Abs(Input.mousePosition.x-body.position.x) <= range)
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		transform.position = new Vector2(transform.position.x, transform.position.y-range);
+		}
+		 if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+		transform.position = new Vector2(transform.position.x, transform.position.y+range);
+		}
+		if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+		transform.position = new Vector2(transform.position.x+range, transform.position.y);
+		}
+		 if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+		transform.position = new Vector2(transform.position.x-range, transform.position.y);
+		}
+          /*  Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log(string.Format("Co-ords of mouse is [X: {0} Y: {0}]", pos.x, pos.y));
 
             Tilemap tilemap = GetComponent<Tilemap>();
@@ -21,6 +35,6 @@ public class MouseTileMov : MonoBehaviour
             transform.Translate(transform.position-new Vector3(body.position.x, body.position.y, 0));
             //transform.Translate(Vector2.zero); 
         }
-    }
+    */
+	}
 }
-

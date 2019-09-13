@@ -59,10 +59,10 @@ public class Mouse_Control : MonoBehaviour {
             Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.velocity = Vector2.zero;
         }
-        if (coll.gameObject.name == "Tilemap") {
-            Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
-            rigidbody.velocity = Vector2.zero;
-        }
+        //if (coll.gameObject.name == "Tilemap") {
+        //    Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+        //    rigidbody.velocity = Vector2.zero;
+        //}
 
     }
 }
