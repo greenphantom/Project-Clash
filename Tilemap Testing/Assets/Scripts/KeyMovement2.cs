@@ -10,55 +10,195 @@ public class KeyMovement2 : MonoBehaviour
 	int horizontalMovement = 0;
 	int verticalMovement = 0;
 	float offset = .5f;
+	int delay = 10;
+	int count = -1;
+
+	UnitState state = UnitState.Standby;
+
+	Vector3Int myVector = new Vector3Int(0,0,0);
+
+	GameObject player;
+	
+	void Start() {
+		player = GameObject.Find("Player");
+	} 
+
 	void Awake() {
 		
+	}
+
+	private void refreshPlayer(){
+		player = GameObject.Find("Player");
 	}
 	
     
 	 void Update () {
-		GameObject player = GameObject.Find("Player");
+		// Bind count so it never overflows
+		count = ++count % delay;
+
+		// Refresh player reference
+		refreshPlayer();
+
+		// Reset Horizontal and Vertical modifiers
 		horizontalMovement = 0;
 		verticalMovement = 0;
-		Vector3Int myVector = new Vector3Int(0,0,0);
 
-		Debug.Log(tilemap.GetSprite(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)));
-		Debug.Log("Player X: " + (int)(player.transform.position.x-offset));
-		Debug.Log("Player Y: " + (int)(player.transform.position.y-offset));
-		if(tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)).name == "mountain") {
-			Debug.Log("Rocky");
-		}
+		Debug.Log("Converted Player Coordinates with Offset: " + convertV3toV3Int(player.transform.position));
 
 		//Check the tilemap for tile data 
-        if (Input.GetKeyDown(KeyCode.DownArrow)) {
+		if (state == UnitState.Moving) {
+			// Don't reset the myVector
+			Debug.Log("My vector is still: "+myVector);
+		}
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 			verticalMovement = -1;
-			myVector = new Vector3Int((int)(player.transform.position.x-offset),(int)(player.transform.position.y-offset-range),0);
+			myVector = convertV3toV3Int(new Vector3(player.transform.position.x,player.transform.position.y-range,0));
 		}
 		else if (Input.GetKeyUp(KeyCode.UpArrow)) {
 			verticalMovement = 1;
-			myVector = new Vector3Int((int)(player.transform.position.x-offset),(int)(player.transform.position.y-offset+range),0);
+			myVector = convertV3toV3Int(new Vector3(player.transform.position.x,player.transform.position.y+range,0));
 		}
 		else if (Input.GetKeyUp(KeyCode.RightArrow)) {
 			horizontalMovement = 1;
-			myVector = new Vector3Int((int)(player.transform.position.x-offset+range),(int)(player.transform.position.y-offset),0);
+			myVector = convertV3toV3Int(new Vector3(player.transform.position.x+range,player.transform.position.y,0));
 		}
 		else if (Input.GetKeyUp(KeyCode.LeftArrow)) {
 			horizontalMovement = -1;
-			myVector = new Vector3Int((int)(player.transform.position.x-offset-range),(int)(player.transform.position.y-offset),0);
+			myVector = convertV3toV3Int(new Vector3(player.transform.position.x-range,player.transform.position.y,0));
+		}
+		else if (Input.GetKeyDown(KeyCode.Mouse0)) {
+			Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			myVector = convertV3toV3Int(target);
+			state = UnitState.Moving;
+			Debug.Log("MOVING");
 		}
 
 		// If the player wants to move
-		if (horizontalMovement != 0 || verticalMovement != 0) {
+			if (horizontalMovement != 0 || verticalMovement != 0 || state == UnitState.Moving) {
 			// Check if it's a valid tile
-			
-			Debug.Log("Vector: "+myVector);
 			TileBase targetTile = tilemap.GetTile(myVector); //.name != "mountain" && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5-range));
-			if (tilemap.GetTile(myVector).name != "mountain" && tilemap.GetTile(myVector).name != "water") {
-				Move(horizontalMovement,verticalMovement);
+			if (isValidTiletoMove(targetTile)) {
+				Debug.Log("VALID");
+				// If the target is greater than one distance away we need to do A* on it
+				// Delay the movement loop
+				if (state == UnitState.Moving) {
+					Debug.Log("Mouse Movement");
+					if (count % delay == 0) {
+						moveToAStarTarget();
+					}
+				}
+				// Otherwise, we can simply move to it
+				else {
+					Move(horizontalMovement,verticalMovement);
+					Debug.Log("Key Movement");
+				}		
+			}
+			// If the tile is not valid, the state needs to be reset to standby
+			else if (state != UnitState.Standby) {
+				state = UnitState.Standby;
 			}
 		 }
 	}
 
-	private void Move(int x, int y) {
-        transform.position =  transform.position + new Vector3(x, y, 0);
+	private void moveToAStarTarget() {
+		Debug.Log("A*");
+		// Generate a list of potential points
+		List<Vector3Int> potentialTargets = generateAStarTargets();
+		
+		// Calculate the one that leads to the shortest distance
+		double shortestDistance = Double.MaxValue;
+		Vector3Int ret = new Vector3Int(100,100,0);
+		foreach (Vector3Int v in potentialTargets) {
+			double temp = getDistance(v+convertV3toV3Int(player.transform.position),myVector);
+			// if the new vector is closer to the destination
+			if (temp < shortestDistance) {
+				shortestDistance = temp;
+				ret = v;
+			}
+		}
+		Debug.Log("The movement vector chosen is: "+ret);
+
+		// Finally, we move to that position
+		Move(ret);
+
+		Debug.Log("The ending position was: "+ player.transform.position);
+
+		// If target is reached, reset state
+		if (getDistance(myVector,getPlayerIntVector()) <= 1f) {
+			Debug.Log("STANDBY");
+			state = UnitState.Standby;
+		}//*/
 	}
+
+	private double getDistance(Vector3Int potentialTarget, Vector3Int target) {
+		return Vector3Int.Distance(potentialTarget, target);
+	}
+
+	private List<Vector3Int> generateAStarTargets() {
+		Vector3Int start = convertV3toV3Int(new Vector3(player.transform.position.x, transform.position.y,0));
+		//Debug.Log("My Start = "+start);
+		List<Vector3Int> potentialTargets = new List<Vector3Int>();
+		potentialTargets.Add(convertV3toV3Int(new Vector3(0,range,0)));
+		potentialTargets.Add(convertV3toV3Int(new Vector3(0,-range,0)));
+		potentialTargets.Add(convertV3toV3Int(new Vector3(range,0,0)));
+		potentialTargets.Add(convertV3toV3Int(new Vector3(-range,0,0)));
+
+		// Filter to only the valid points
+		return potentialTargets.FindAll(vector => isValidTiletoMove(vector+convertV3toV3Int(player.transform.position)));
+	}
+
+	private bool isValidTiletoMove(TileBase tileBase) {
+		if (tileBase == null) {
+			state = UnitState.Standby;
+			Debug.Log("STANDBY");
+			return false;
+		}
+		else return tileBase.name != "mountain" && tileBase.name != "water";
+	}
+
+	private bool isValidTiletoMove(Vector3Int vector3Int) {
+		TileBase tileBase = tilemap.GetTile(vector3Int);
+		if (tileBase == null) {
+			state = UnitState.Standby;
+			return false;
+		}
+		else return tileBase.name != "mountain" && tileBase.name != "water";
+	}
+
+	private void Move(int x, int y) {
+        player.transform.position =  player.transform.position + new Vector3(x, y, 0);
+	}
+
+	private void Move(Vector3Int v, bool withOffset = false) {
+		player.transform.position = v + player.transform.position;
+		if (withOffset) { offsetPlayer(); }
+	}
+
+	private Vector3Int getPlayerIntVector() {
+		return convertV3toV3Int(player.transform.position);
+	}
+
+	private Vector3Int convertV3toV3Int(Vector3 v3) {
+		return new Vector3Int(Convert.ToInt32(v3.x),Convert.ToInt32(v3.y),0);
+	}
+
+	private Vector3Int convertV3toV3Int(float x, float y) {
+		return new Vector3Int(Convert.ToInt32(x),Convert.ToInt32(y),0);
+	}
+
+	private void offsetPlayer(float off=.5f){
+		Debug.Log("Pre Offset Coordinates: "+player.transform.position);
+		// There is an issue with the way we have our coordinates. In this current iteration, two rows and columns are considered x = 0, y = 0 respectively. 
+		// This messed with the pathing, casuing it to skip over the row/column.
+		float x = player.transform.position.x;
+		float y = player.transform.position.y;
+		// For reference 
+		/*
+		Coordinate(0.5.-0.5,0) -> (0,-1,0) ** currently
+		 */
+		//x = x 
+		player.transform.position = new Vector3(x+off,y+off,0);
+		Debug.Log("Offset Coordinates: "+player.transform.position);
+	}
+
 }
