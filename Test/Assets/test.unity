@@ -1446,8 +1446,13 @@ Tilemap:
       m_ColliderType: 2
   - first: {x: 3, y: -4, z: 0}
     second:
+<<<<<<< Updated upstream:Test/Assets/test.unity
       m_TileIndex: 2
       m_TileSpriteIndex: 0
+=======
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
+>>>>>>> Stashed changes:Tilemap Testing/Assets/Scenes/SampleScene.unity
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1635,8 +1640,13 @@ Tilemap:
       m_ColliderType: 2
   - first: {x: 1, y: -3, z: 0}
     second:
+<<<<<<< Updated upstream:Test/Assets/test.unity
       m_TileIndex: 2
       m_TileSpriteIndex: 0
+=======
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
+>>>>>>> Stashed changes:Tilemap Testing/Assets/Scenes/SampleScene.unity
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -2553,6 +2563,7 @@ Tilemap:
       m_ColliderType: 2
   m_AnimatedTiles: {}
   m_TileAssetArray:
+<<<<<<< Updated upstream:Test/Assets/test.unity
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: bf5aac4dacd36c443866ba3fdd1d63f8, type: 2}
   - m_RefCount: 1
@@ -2576,6 +2587,25 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 1c9e9c32a836fbe469d11bd8cd46a5d6, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+=======
+  - m_RefCount: 60
+    m_Data: {fileID: 11400000, guid: b7ec72eb42b2d48468e50ae452ea3538, type: 2}
+  - m_RefCount: 149
+    m_Data: {fileID: 11400000, guid: 9846c8943314fdc42b417221657d8ec5, type: 2}
+  - m_RefCount: 9
+    m_Data: {fileID: 11400000, guid: aa069ccc3c1a6a64c9bab23deebd1aed, type: 2}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: e2685923621da034eacbf4cc00b9fb0f, type: 2}
+  m_TileSpriteArray:
+  - m_RefCount: 60
+    m_Data: {fileID: 21300000, guid: 4fcfc7be05949c74aa9ad6e496d84b01, type: 3}
+  - m_RefCount: 149
+    m_Data: {fileID: 21300000, guid: 25b4f051cd89ea243b1cacc926d9f0af, type: 3}
+  - m_RefCount: 9
+    m_Data: {fileID: 21300000, guid: 642eced520c34124e87d20cf70c56f62, type: 3}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: dc52e86fb42ee6c409fb2a3ad54317c2, type: 3}
+>>>>>>> Stashed changes:Tilemap Testing/Assets/Scenes/SampleScene.unity
   m_TileMatrixArray:
   - m_RefCount: 230
     m_Data:
