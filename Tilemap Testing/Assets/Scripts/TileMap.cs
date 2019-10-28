@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileMap : MonoBehaviour
 {
 
-    public TileType[] tileTypes; 
+    public TileBlock[] tileTypes; 
     int[,] tiles; 
 
     int mapSizeX = 22;

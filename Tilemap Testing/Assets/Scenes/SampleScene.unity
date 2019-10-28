@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 89876014}
   - component: {fileID: 89876012}
   - component: {fileID: 89876013}
+  - component: {fileID: 89876016}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -996,8 +997,8 @@ Tilemap:
       m_ColliderType: 1
   - first: {x: -4, y: -1, z: 0}
     second:
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1185,8 +1186,8 @@ Tilemap:
       m_ColliderType: 1
   - first: {x: -5, y: 0, z: 0}
     second:
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -2123,17 +2124,21 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 60
     m_Data: {fileID: 11400000, guid: b7ec72eb42b2d48468e50ae452ea3538, type: 2}
-  - m_RefCount: 151
+  - m_RefCount: 149
     m_Data: {fileID: 11400000, guid: 9846c8943314fdc42b417221657d8ec5, type: 2}
   - m_RefCount: 9
     m_Data: {fileID: 11400000, guid: aa069ccc3c1a6a64c9bab23deebd1aed, type: 2}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: e2685923621da034eacbf4cc00b9fb0f, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 60
     m_Data: {fileID: 21300000, guid: 4fcfc7be05949c74aa9ad6e496d84b01, type: 3}
-  - m_RefCount: 151
+  - m_RefCount: 149
     m_Data: {fileID: 21300000, guid: 25b4f051cd89ea243b1cacc926d9f0af, type: 3}
   - m_RefCount: 9
     m_Data: {fileID: 21300000, guid: 642eced520c34124e87d20cf70c56f62, type: 3}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: dc52e86fb42ee6c409fb2a3ad54317c2, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 220
     m_Data:
@@ -2238,6 +2243,39 @@ Transform:
   m_Father: {fileID: 1361368043}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &89876016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89876011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b44d1047bf101d14ba28d005d8e3588a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileTypes:
+  - type: Plain
+    movementCost: 1
+    tileTexture: {fileID: 11400000, guid: 9846c8943314fdc42b417221657d8ec5, type: 2}
+    passable: 1
+    advBonus: 0
+  - type: Water
+    movementCost: 0
+    tileTexture: {fileID: 11400000, guid: e2685923621da034eacbf4cc00b9fb0f, type: 2}
+    passable: 0
+    advBonus: -10
+  - type: Mountain
+    movementCost: 3
+    tileTexture: {fileID: 11400000, guid: b7ec72eb42b2d48468e50ae452ea3538, type: 2}
+    passable: 0
+    advBonus: 20
+  - type: Forest
+    movementCost: 2
+    tileTexture: {fileID: 11400000, guid: aa069ccc3c1a6a64c9bab23deebd1aed, type: 2}
+    passable: 1
+    advBonus: 10
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,6 +2389,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 89876012}
+  blocks:
+  - type: Plains
+    movementCost: 1
+    tileTexture: {fileID: 11400000, guid: 9846c8943314fdc42b417221657d8ec5, type: 2}
+    passable: 1
+    advBonus: 0
+  - type: Water
+    movementCost: 0
+    tileTexture: {fileID: 11400000, guid: e2685923621da034eacbf4cc00b9fb0f, type: 2}
+    passable: 0
+    advBonus: -10
+  - type: Mountain
+    movementCost: 3
+    tileTexture: {fileID: 11400000, guid: b7ec72eb42b2d48468e50ae452ea3538, type: 2}
+    passable: 1
+    advBonus: 20
+  - type: Forest
+    movementCost: 2
+    tileTexture: {fileID: 11400000, guid: aa069ccc3c1a6a64c9bab23deebd1aed, type: 2}
+    passable: 1
+    advBonus: 10
 --- !u!212 &947340630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2406,7 +2465,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947340628}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []

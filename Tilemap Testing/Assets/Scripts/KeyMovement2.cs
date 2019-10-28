@@ -6,6 +6,10 @@ using System;
 public class KeyMovement2 : MonoBehaviour
 {
 	public Tilemap tilemap;
+<<<<<<< HEAD
+	public TileBlock[] blocks; 
+	int movement = 5; 
+=======
 	float range =  1;
 	int horizontalMovement = 0;
 	int verticalMovement = 0;
@@ -23,6 +27,7 @@ public class KeyMovement2 : MonoBehaviour
 		player = GameObject.Find("Player");
 	} 
 
+>>>>>>> ed085af99188929f4b8a8176ed4b4147f02b47b5
 	void Awake() {
 		
 	}
@@ -33,6 +38,63 @@ public class KeyMovement2 : MonoBehaviour
 	
     
 	 void Update () {
+<<<<<<< HEAD
+		
+		float range =  1;
+		 
+		GameObject player = GameObject.Find("Player");
+		Debug.Log(tilemap.GetSprite(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)));
+		for(int i = 0; i < blocks.Length; i++) {
+		if(tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)) == blocks[i].tileTexture){
+		Debug.Log("We have found a match");
+		Debug.Log("The adv bonus of this terrain is " + blocks[i].advBonus);
+		}
+		}
+		//Debug.Log(player.transform.position.x);
+		//Debug.Log(player.transform.position.y);
+		Debug.Log((int)player.transform.position.x);
+		Debug.Log((int)player.transform.position.y);
+		if(tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)).name == "mountain") {
+			Debug.Log("Rocky");
+		}
+												//Check the tilemap for tile data 
+        if (Input.GetKeyDown(KeyCode.DownArrow) && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5-range),0)).name != "mountain" && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5-range),0)).name != "water" && movement != 0)
+        {
+		transform.position = new Vector2(transform.position.x, transform.position.y-range);
+		movement = getBlock(movement);
+		}
+		 if (Input.GetKeyUp(KeyCode.UpArrow) && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5+range),0)).name != "mountain" && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5+range),0)).name != "water" && movement != 0)
+        {
+		transform.position = new Vector2(transform.position.x, transform.position.y+range);
+		movement = getBlock(movement);
+		}
+		if (Input.GetKeyDown(KeyCode.RightArrow) && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5+range),(int)(player.transform.position.y-.5),0)).name != "mountain" && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5+range),(int)(player.transform.position.y-.5),0)).name != "water" && movement != 0)
+        {
+		transform.position = new Vector2(transform.position.x+range, transform.position.y);
+		movement = getBlock(movement);
+		}
+		 if (Input.GetKeyUp(KeyCode.LeftArrow) && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5-range),(int)(player.transform.position.y-.5),0)).name != "mountain" && tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5-range),(int)(player.transform.position.y-.5),0)).name != "water" && movement != 0)
+        {
+		transform.position = new Vector2(transform.position.x-range, transform.position.y);
+		movement = getBlock(movement);
+		}
+		Debug.Log("The movement available is " + movement);
+	}
+	
+	int getBlock(int movement) {
+	GameObject player = GameObject.Find("Player");
+	//Check what tile we are on and update the movement of the character according to the spaces that it has moved. 
+	for(int i = 0; i < blocks.Length; i++) {
+		if(tilemap.GetTile(new Vector3Int((int)(player.transform.position.x-.5),(int)(player.transform.position.y-.5),0)) == blocks[i].tileTexture){
+		Debug.Log("We have found a match");
+		Debug.Log("The adv bonus of this terrain is " + blocks[i].advBonus);
+		movement = movement - blocks[i].movementCost;
+		}
+		}
+	Debug.Log("The new movement is " + movement);
+	return movement; 
+}
+=======
 		// Bind count so it never overflows
 		count = ++count % delay;
 
@@ -201,4 +263,5 @@ public class KeyMovement2 : MonoBehaviour
 		Debug.Log("Offset Coordinates: "+player.transform.position);
 	}
 
+>>>>>>> ed085af99188929f4b8a8176ed4b4147f02b47b5
 }
